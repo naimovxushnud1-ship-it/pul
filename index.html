@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jamg'arma Kalendari - Kelajak uchun sarmoya</title>
+    <meta name="description" content="Yil oxirigacha pul yig'ish jarayonini kuzatuvchi interaktiv va chiroyli moliyaviy kalendar ilovasi.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Background subtle lights -->
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+    <main class="app-container">
+        
+        <!-- Header Panel -->
+        <header class="panel glass-panel header-panel">
+            <div class="brand">
+                <i class="fa-solid fa-piggy-bank logo-icon"></i>
+                <div>
+                    <h1>KOPILKA</h1>
+                    <span class="subtitle">Moliyaviy Tartib & Jamg'arma Kalendari</span>
+                </div>
+            </div>
+            
+            <div class="year-progress-container">
+                <div class="progress-info">
+                    <span>Yillik Progress (2026)</span>
+                    <span id="year-days-ratio">Kun: 154 / 365</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div id="year-progress-bar" class="progress-bar-fill" style="width: 42%;"></div>
+                </div>
+            </div>
+        </header>
+        <!-- Main Dashboard Layout -->
+        <div class="dashboard-grid">
+            
+            <!-- Left Side: Stats and Ledger -->
+            <section class="left-column">
+                
+                <!-- Stats Summary Panel -->
+                <div class="panel glass-panel stats-panel">
+                    <h2><i class="fa-solid fa-chart-simple"></i> Jamg'arma Statistikasi</h2>
+                    <hr class="divider">
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <span class="stat-label">Jami Yig'ildi</span>
+                            <span id="total-saved" class="stat-value">0 UZS</span>
+                            <div class="stat-trend trend-up">
+                                <i class="fa-solid fa-arrow-trend-up"></i>
+                                <span id="goal-percent">0% bajarildi</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="label-with-action">
+                                <span class="stat-label">Yillik Maqsad</span>
+                                <button id="edit-goal-btn" class="icon-btn" title="Maqsadni o'zgartirish">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </button>
+                            </div>
+                            <span id="savings-goal" class="stat-value text-gold">10,000,000 UZS</span>
+                            <span id="remaining-amount" class="stat-subtext">Qoldi: 10,000,000 UZS</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-label">Jamg'arma Streaki</span>
+                            <span id="savings-streak" class="stat-value text-cyan">0 kun</span>
+                            <span id="max-streak" class="stat-subtext">Eng yaxshi natija: 0 kun</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-label">Kunlik Tavsiya</span>
+                            <span id="daily-recommendation" class="stat-value text-emerald">0 UZS</span>
+                            <span id="days-left" class="stat-subtext">Yil oxirigacha 211 kun qoldi</span>
+                        </div>
+                    </div>
+                    <!-- Visual gauge for savings percent -->
+                    <div class="goal-progress-bar-container">
+                        <div class="goal-bar-bg">
+                            <div id="goal-progress-bar" class="goal-bar-fill" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Ledger Activity Panel -->
+                <div class="panel glass-panel ledger-panel">
+                    <h2><i class="fa-solid fa-clock-rotate-left"></i> Oxirgi O'tkazmalar</h2>
+                    <hr class="divider">
+                    <div class="ledger-container">
+                        <table class="ledger-table">
+                            <thead>
+                                <tr>
+                                    <th>Sana</th>
+                                    <th>Miqdor</th>
+                                    <th>Izoh</th>
+                                    <th>Amal</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ledger-body">
+                                <!-- Dynamically loaded transactions -->
+                                <tr class="empty-row">
+                                    <td colspan="4">Hozircha tranzaksiyalar yo'q. Kalendardan kunni tanlab pul qo'shing!</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+            <!-- Right Side: The Interactive Calendar -->
+            <section class="right-column">
+                <div class="panel glass-panel calendar-panel">
+                    <div class="calendar-header">
+                        <button id="prev-month" class="ctrl-btn-nav"><i class="fa-solid fa-chevron-left"></i></button>
+                        <h2 id="current-month-year" class="month-title">Iyun 2026</h2>
+                        <button id="next-month" class="ctrl-btn-nav"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                    
+                    <hr class="divider">
+                    <!-- Weekdays header -->
+                    <div class="weekdays-grid">
+                        <div>Dush</div>
+                        <div>Sesh</div>
+                        <div>Chor</div>
+                        <div>Pay</div>
+                        <div>Jum</div>
+                        <div class="weekend">Shan</div>
+                        <div class="weekend">Yak</div>
+                    </div>
+                    <!-- Days Grid -->
+                    <div id="days-grid" class="days-grid">
+                        <!-- Dynamically generated days -->
+                    </div>
+                    <!-- Legend and Fast Actions -->
+                    <div class="calendar-footer">
+                        <div class="legend">
+                            <div class="legend-item">
+                                <span class="legend-dot empty"></span>
+                                <span>Kiritilmagan kunlar</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-dot filled"></span>
+                                <span>Jamg'arilgan kunlar</span>
+                            </div>
+                        </div>
+                        <div class="fast-action-container">
+                            <button id="fast-add-btn" class="action-btn-primary">
+                                <i class="fa-solid fa-circle-plus"></i> Bugunga tezkor qo'shish
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    <!-- Modal 1: Add/Edit Saving Modal -->
+    <div id="saving-modal" class="modal-overlay">
+        <div class="modal-content glass-panel">
+            <button id="close-saving-modal" class="modal-close-btn">&times;</button>
+            <div class="modal-header-container">
+                <i class="fa-solid fa-coins modal-header-icon"></i>
+                <h3 id="modal-date-title">3-Iyun, 2026-yil</h3>
+                <p class="modal-desc">Ushbu sana uchun jamg'arilgan pul miqdorini kiriting.</p>
+            </div>
+            
+            <form id="saving-form" onsubmit="event.preventDefault();">
+                <div class="form-group">
+                    <label for="saving-amount">Pul miqdori (UZS)</label>
+                    <input type="number" id="saving-amount" placeholder="Masalan: 20000" min="1" required>
+                </div>
+                <!-- Quick Presets -->
+                <div class="form-group">
+                    <label>Tezkor tanlash (So'm)</label>
+                    <div class="quick-amount-presets">
+                        <button type="button" class="preset-amount-btn" data-value="10000">+10k</button>
+                        <button type="button" class="preset-amount-btn" data-value="20000">+20k</button>
+                        <button type="button" class="preset-amount-btn" data-value="50000">+50k</button>
+                        <button type="button" class="preset-amount-btn" data-value="100000">+100k</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="saving-comment">Izoh (ixtiyoriy)</label>
+                    <input type="text" id="saving-comment" placeholder="Masalan: Yo'lkiradan tejab qolindi">
+                </div>
+                <div class="modal-action-buttons">
+                    <button type="button" id="delete-saving-btn" class="modal-btn btn-danger hidden">
+                        <i class="fa-solid fa-trash-can"></i> O'chirish
+                    </button>
+                    <button type="submit" id="save-saving-btn" class="modal-btn btn-primary">
+                        <i class="fa-solid fa-floppy-disk"></i> Saqlash
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Modal 2: Edit Goal Modal -->
+    <div id="goal-modal" class="modal-overlay">
+        <div class="modal-content glass-panel">
+            <button id="close-goal-modal" class="modal-close-btn">&times;</button>
+            <div class="modal-header-container">
+                <i class="fa-solid fa-bullseye modal-header-icon text-gold"></i>
+                <h3>Yillik Maqsadni Tahrirlash</h3>
+                <p class="modal-desc">Yil oxirigacha jami yig'moqchi bo'lgan pul miqdorini kiriting.</p>
+            </div>
+            
+            <form id="goal-form" onsubmit="event.preventDefault();">
+                <div class="form-group">
+                    <label for="goal-amount">Yangi maqsad (UZS)</label>
+                    <input type="number" id="goal-amount" placeholder="Masalan: 10000000" min="1000" required>
+                </div>
+                <div class="modal-action-buttons">
+                    <button type="button" id="cancel-goal-btn" class="modal-btn btn-secondary">Bekor qilish</button>
+                    <button type="submit" id="save-goal-btn" class="modal-btn btn-primary">Saqlash</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Scripts -->
+    <script src="app.js"></script>
+</body>
+</html>
